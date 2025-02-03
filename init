@@ -4,8 +4,8 @@
 sudo apt-get install -y libdnnl-dev
 
 # Download M2M-100 model
-wget -P models/ http://data.argosopentech.com/argospm/v2/translate-fairseq_m2m_100_418M.argosmodel
-unzip models/translate-fairseq_m2m_100_418M.argosmodel -d models/
+wget -P models/ https://argos-net.com/v1/translate-en_es-1_0.argosmodel
+unzip models/translate-en_es-1_0.argosmodel -d models/
 
 # Download dependencies
 git submodule update --init --recursive

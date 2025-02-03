@@ -10,12 +10,12 @@ MetalTranslate::MetalTranslate(MetalTranslateConfig config) {
   this->_config = config;
 }
 
-std::string MetalTranslate::Translate(std::string source,
-                                      std::string source_code,
-                                      std::string target_code) {
-
+std::string MetalTranslate::Translate(std::string model,
+                      std::string source,
+                      std::string source_code,
+                      std::string target_code) {
   // Tokenizer
-  onmt::Tokenizer tokenizer(this->_config.ModelPath + "sentencepiece.model");
+  onmt::Tokenizer tokenizer(this->_config.ModelPath + model + "/sentencepiece.model");
   std::vector<std::string> tokens;
   tokenizer.tokenize(source, tokens);
 
@@ -27,12 +27,12 @@ std::string MetalTranslate::Translate(std::string source,
   const size_t num_threads_per_translator = 0; // Unused with DNNL
   ctranslate2::TranslatorPool translator(
       num_translators, num_threads_per_translator,
-      this->_config.ModelPath + "model", ctranslate2::Device::CPU);
+      this->_config.ModelPath + model + "/model", ctranslate2::Device::CPU);
 
   const std::vector<std::vector<std::string>> batch = {tokens};
   const std::vector<std::vector<std::string>> target_prefix = {
       {"__" + target_code + "__"}};
-  const int max_batch_size = 2024;
+  const int max_batch_size = this->_config.maxBatchSize;
 
   const std::vector<ctranslate2::TranslationResult> results =
       translator.translate_batch(batch, target_prefix);

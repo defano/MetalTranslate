@@ -4,8 +4,7 @@
 #include <string>
 
 void help() {
-  std::cout << "Usage: metaltranslate <text> <source code> <target code>\n"
-            << "Example: metaltranslate \"my text to translate\" en es\n";
+  std::cout << "Usage: metaltranslate <model> <text> <source code> <target code>\n";
 }
 
 int main(int argc, char **argv) {
@@ -13,24 +12,25 @@ int main(int argc, char **argv) {
 
   MetalTranslate::MetalTranslate metalTranslate(config);
 
-  if (argc < 2) {
+  if (argc < 3) {
     help();
     return 1;
   }
 
-  std::string q(argv[1]);
+  std::string model(argv[1]);
+  std::string q(argv[2]);
 
   std::string sourceCode = "en";
-  if (argc > 2) {
-    sourceCode = std::string(argv[2]);
+  if (argc > 3) {
+    sourceCode = std::string(argv[3]);
   }
 
   std::string targetCode = "es";
-  if (argc > 3) {
-    targetCode = std::string(argv[3]);
+  if (argc > 4) {
+    targetCode = std::string(argv[4]);
   }
 
-  std::string result = metalTranslate.Translate(q, sourceCode, targetCode);
+  std::string result = metalTranslate.Translate(model, q, sourceCode, targetCode);
 
   std::cout << result << std::endl;
 
