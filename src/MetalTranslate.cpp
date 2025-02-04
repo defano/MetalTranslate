@@ -15,7 +15,7 @@ std::string MetalTranslate::Translate(std::string model,
                       std::string source_code,
                       std::string target_code) {
   // Tokenizer
-  onmt::Tokenizer tokenizer(this->_config.ModelPath + model + "/sentencepiece.model");
+  onmt::Tokenizer tokenizer(model + "/sentencepiece.model");
   std::vector<std::string> tokens;
   tokenizer.tokenize(source, tokens);
 
@@ -27,7 +27,7 @@ std::string MetalTranslate::Translate(std::string model,
   const size_t num_threads_per_translator = 0; // Unused with DNNL
   ctranslate2::TranslatorPool translator(
       num_translators, num_threads_per_translator,
-      this->_config.ModelPath + model + "/model", ctranslate2::Device::CPU);
+      model + "/model", ctranslate2::Device::CPU);
 
   const std::vector<std::vector<std::string>> batch = {tokens};
   const std::vector<std::vector<std::string>> target_prefix = {
